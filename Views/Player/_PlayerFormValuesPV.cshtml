@@ -17,14 +17,14 @@
 			<img class="player-face rounded-circle" id="PicturePreview" />
 		</div>
 		<li class="form-group">
-			<label class="control-label col-md-2" asp-for="PictureURL"></label>
-			<input class=" col-md-1 " asp-for="PictureURL" />
-			<span class="text-danger col-md-1" asp-validation-for="PictureURL"></span>
+			<label class="control-label col-md-2" asp-for="@Model.PictureURL"></label>
+			<input class=" col-md-1 " asp-for="@Model.PictureURL" />
+			<span class="text-danger col-md-1" asp-validation-for="@Model.PictureURL"></span>
 		</li>
 		<li class="form-group">
-			<label class="control-label col-md-2" asp-for="Name"></label>
-			<input class=" col-md-1 " asp-for="Name" />
-			<span class="text-danger" asp-validation-for="Name"></span>
+			<label class="control-label col-md-2" asp-for="@Model.Name"></label>
+			<input class=" col-md-1 " asp-for="@Model.Name" />
+			<span class="text-danger" asp-validation-for="@Model.Name"></span>
 		</li>
 		<li class="form-group">
 			<label class="control-label col-md-2" asp-for="Surname"></label>
@@ -45,12 +45,13 @@
 		</li>
 		<li class="form-group">
 
-			<label class="control-label col-md-2" asp-for="TeamId"></label>
-			<select id="player-team-select" class="col-md-1" asp-for="TeamId" asp-items="@GetTeams()">
-				<option value="">Add New</option>
-				<option disabled selected="selected" value="">Please select</option>
+			<label class="control-label col-md-2" asp-for="@Model.TeamId"></label>
+			<select id="player-team-select" class="col-md-1" asp-for="@Model.TeamId" asp-items="@GetTeams()">
+				<option disabled="disabled" selected="selected" value="not selected">Please select</option>
+
+				<option value ="add new">Add New</option>
 			</select>
-			<span class="text-danger" asp-validation-for="TeamId"></span>
+			<span class="text-danger" asp-validation-for="@Model.TeamId"></span>
 		</li>
 		<li class="form-group">
 			<label class="control-label col-md-2" asp-for="Country"></label>

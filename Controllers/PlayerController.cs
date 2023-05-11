@@ -53,7 +53,8 @@ namespace _66bitPractice.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				return View(player);
+				await UpdateViewBagData();
+				return View(nameof(Edit),player);
 			}
 			await playerService.Update(id, player);
 			return RedirectToAction(nameof(Show));
@@ -62,7 +63,7 @@ namespace _66bitPractice.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNew(NewPlayerVM player)
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid || player.TeamId == 0)
 			{
 				await UpdateViewBagData();
 				return View("Add", player);
