@@ -1,0 +1,58 @@
+﻿@using _66bitPractice.Data;
+@using _66bitPractice.Data.ViewModels;
+@model NewPlayerVM
+
+@{
+	ViewData["Title"] = "Add Your Professional;";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Professional</h1>
+	<p>He is footballer.</p>
+	<div>
+		<form model="post" asp-controller="Player" asp-action="AddNew">
+			@await Html.PartialAsync("_PlayerFormValuesPV",Model)
+		</form>
+	</div>
+	<div class="">
+		<div style="display:none;" id="form-placeholder">
+			<h1>Add New Team</h1>
+			<form id="team-form" model="post" asp-controller="Team" asp-action="AddNewTeam">
+				<div id="team-form-values">
+					@await Html.PartialAsync("_TeamFormValuesPV", new NewTeamVM())
+				</div>
+				<div class="form-group text-white">
+					<input class="btn btn-success" id="team-add-btn" type="submit" value="Add it!" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		function changeVisibility(visible) {
+			var $teamForm = $('#team-form-values');
+			var placeHolder = document.getElementById("form-placeholder");
+			if (visible) {
+				placeHolder.style.display = "block";
+			}
+			else {
+				placeHolder.style.display = "none";
+			}
+		}
+
+		$("#player-team-select").change(function () {
+			changeVisibility(this.value === "");
+		});
+
+		$('team-add-btn').click(function () {
+			var teamForm = $('#team-form-values');
+			('#form-placeholder').style.display = "none";
+		});
+	</script>
+}
+
+
+
+

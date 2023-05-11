@@ -1,0 +1,98 @@
+﻿@using System.Reflection;
+@using System.ComponentModel;
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Microsoft.EntityFrameworkCore.Metadata.Internal;
+@using _66bitPractice.Controllers;
+@using _66bitPractice.Data.Services;
+@using _66bitPractice.Models;
+@using _66bitPractice.Data.ViewModels;
+
+@model IEnumerable<PlayerVM>
+@{
+	ViewData["Title"] = "Page With All Players!";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Best football players</h1>
+	<div class="row">
+		<div class="col-sm-9 offset-md-1">
+
+			<table class="table">
+				<thead>
+					<tr>
+
+						@foreach (var item in typeof(PlayerVM).GetProperties()
+								.Select(prop => prop.GetCustomAttribute<DisplayAttribute>())
+								.Where(displayAttr => displayAttr != null))
+						{
+							<th>@item.GetName()</th>
+						}
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="PlayersTable">
+					@foreach (var item in Model)
+					{
+						@await Html.PartialAsync("_PlayerTemplatePV", item)
+					}
+				</tbody>
+				<tr>
+					<td></td>
+				</tr>
+
+
+			</table>
+
+		</div>
+	</div>
+</div>
+<div class="text-white">
+	<a asp-controller="Player" asp-action="Add" class="btn btn-success bottom-right"><i class="bi bi-plus-circle"></i>Add new</a>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		let connection = new signalR.HubConnectionBuilder().withUrl("/PlayersHub").build();
+		connection.start();
+		console.log("Start of js code");
+		connection.on("Notify", function () {
+			loadPlayers();
+		});
+
+		//loadPlayers();
+
+		function loadPlayers() {
+			$.ajax({
+				url: 'GetPlayersIds',
+				async: true,
+				method: "GET",
+				success: (result) => {
+					$("#PlayersTable").empty();
+					for (var i = 0; i < result.length; i++) {
+						console.log(result[i]);
+						$.ajax({
+							url: 'GetPlayerPartialById',
+							async: true,
+							method: "GET",
+							data: { 'id': result[i] },
+							success: function (responce) {
+								console.log(responce);
+								$('#PlayersTable').append(responce);
+							},
+							error: function (err) {
+								console.log(err);
+							}
+						});
+					}
+				},
+				error: (error) => {
+					console.log(error)
+				}
+			})
+		}
+	})
+</script>
+

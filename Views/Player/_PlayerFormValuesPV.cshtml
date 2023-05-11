@@ -1,0 +1,65 @@
+﻿@using _66bitPractice.Data.ViewModels;
+@using _66bitPractice.Data;
+@model NewPlayerVM
+@{
+	IEnumerable<SelectListItem> GetTeams()
+	{
+		foreach (var team in ViewBag.Teams)
+		{
+			yield return new SelectListItem(team.Name, team.Id.ToString());
+		}
+	}
+}
+
+<div>
+	<ul>
+		<div class="form-group">
+			<img class="player-face rounded-circle" id="PicturePreview" />
+		</div>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="PictureURL"></label>
+			<input class=" col-md-1 " asp-for="PictureURL" />
+			<span class="text-danger col-md-1" asp-validation-for="PictureURL"></span>
+		</li>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="Name"></label>
+			<input class=" col-md-1 " asp-for="Name" />
+			<span class="text-danger" asp-validation-for="Name"></span>
+		</li>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="Surname"></label>
+			<input class=" col-md-1 " asp-for="Surname" />
+			<span class="text-danger" asp-validation-for="Surname"></span>
+		</li>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="Gender"></label>
+			<select class="col-md-1" id="GenderSelect" asp-for="Gender" asp-items="@(Html.GetEnumSelectList<Gender>())">
+				<option disabled selected="selected" value="">Please select</option>
+			</select>
+			<span class="text-danger" asp-validation-for="Gender"></span>
+		</li>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="BirthDate"></label>
+			<input class="col-md-1" asp-for="BirthDate" type="date" placeholder="From" />
+			<span class="text-danger" asp-validation-for="BirthDate"></span>
+		</li>
+		<li class="form-group">
+
+			<label class="control-label col-md-2" asp-for="TeamId"></label>
+			<select id="player-team-select" class="col-md-1" asp-for="TeamId" asp-items="@GetTeams()">
+				<option value="">Add New</option>
+				<option disabled selected="selected" value="">Please select</option>
+			</select>
+			<span class="text-danger" asp-validation-for="TeamId"></span>
+		</li>
+		<li class="form-group">
+			<label class="control-label col-md-2" asp-for="Country"></label>
+			<select class="col-md-1" asp-for="Country" asp-items="@(Html.GetEnumSelectList<Country>())">
+				<option disabled selected="selected" value="">Please select</option>
+			</select>
+			<span class="text-danger" asp-validation-for="Country"></span>
+		</li>
+	</ul>
+
+	<input class="btn btn-outline-success" type="submit" value="Submit" />
+</div>
